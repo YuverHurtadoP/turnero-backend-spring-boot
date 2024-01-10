@@ -8,7 +8,7 @@ public class TurneroApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TurneroApplication.class, args);
-		S
+		
 	}
 
 }
