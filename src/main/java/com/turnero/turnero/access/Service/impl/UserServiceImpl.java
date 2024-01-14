@@ -13,6 +13,7 @@ import com.turnero.turnero.access.dao.IUserDao;
 import com.turnero.turnero.access.dto.Response.UserResponseDto;
 import com.turnero.turnero.access.dto.request.UserRequestDto;
 import com.turnero.turnero.access.entity.UserEntity;
+import com.turnero.turnero.exception.BadRequestException;
 import com.turnero.turnero.exception.ErrorInternalServer;
 import com.turnero.turnero.exception.NotFoundException;
 
@@ -33,14 +34,17 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserResponseDto saveUser(UserRequestDto dto) {
 		UserEntity entityUser = new UserEntity();
-		if(rolService.findByrolId(dto.getRolUser()) != null)
-			throw new  NotFoundException("No se encuetra el rol en la base de datos");
+		if(!dto.getPassword().equals(dto.getPasswordConfirm()))
+			throw new  BadRequestException("Las contraseñas no coinciden");
+		if(rolService.findByrolId(dto.getRolUser()) == null)
+			throw new NotFoundException("No se encuetra el rol en la base de datos:"+dto.getRolUser());
 		if(userDao.findByEmail(dto.getEmail()).isPresent())
-			throw new  ErrorInternalServer("El usuario : "+dto.getEmail() +" ya esta presente en la base de dato");
+			throw new  NotFoundException("El usuario : "+dto.getEmail() +" ya esta presente en la base de dato");
 		dto.setActive(true);
 		dto.setUpdatedAp(null);
 		dto.setCreatedAp(new Date());
 		entityUser = modelMapper.map(dto, UserEntity.class);
+		entityUser.setUserId(0);
 		entityUser = userDao.save(entityUser);
 		return modelMapper.map(entityUser,UserResponseDto.class);
 	}

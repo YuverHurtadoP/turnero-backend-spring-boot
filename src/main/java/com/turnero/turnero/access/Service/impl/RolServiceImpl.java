@@ -36,7 +36,7 @@ public class RolServiceImpl implements IRolService {
 	public  RolResponseDto findByrolId(int rolId) {
 		Optional<RolEntity> rol = rolDao.findByrolId(rolId);
 		if(rol.isPresent())
-			return modelMapper.map(rol, RolResponseDto.class);
+			return modelMapper.map(rol.get(), RolResponseDto.class);
 		return null;
 	}
 

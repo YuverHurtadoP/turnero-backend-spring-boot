@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class DepartmentEntity {
 	
 	@Id
-	@Column(name = "id_departamento")
+	@Column(name = "id_deprtamento")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int deparmentId;
 	

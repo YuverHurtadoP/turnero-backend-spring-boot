@@ -32,7 +32,7 @@ public class DocumentTypeServiceImpl implements IDocumentTypeService {
 	public DocumentTypeResponseDto findByDocumentTypeId(int documentTypeId) {
 		Optional<DocumentTypeEntity> documenyoType = documentTypeDao.findByDocumentTypeId(documentTypeId);
 		if(documenyoType.isPresent())
-			return  modelMapper.map(documenyoType, DocumentTypeResponseDto.class);
+			return  modelMapper.map(documenyoType.get(), DocumentTypeResponseDto.class);
 		return null;
 	}
 

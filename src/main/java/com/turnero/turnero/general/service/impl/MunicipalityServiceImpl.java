@@ -30,7 +30,7 @@ public class MunicipalityServiceImpl implements IMunicipalityService {
 	public MunicipalityResponseDto findByMunicipalityId(int municipalityId) {
 		Optional<MunicipalityEntity> municipality = municipalityDao.findByMunicipalityId(municipalityId);
 		if(municipality.isPresent())
-			return modelMapper.map(municipality, MunicipalityResponseDto.class);
+			return modelMapper.map(municipality.get(), MunicipalityResponseDto.class);
 		return null;
 	}
 

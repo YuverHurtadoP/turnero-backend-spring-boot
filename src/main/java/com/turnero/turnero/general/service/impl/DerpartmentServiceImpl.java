@@ -35,7 +35,7 @@ public class DerpartmentServiceImpl implements IDerpartmentService{
 	public DepartmentResponseDto findByDeparmentId(int deparmentId) {
 		Optional<DepartmentEntity> departmentEntity = departmentDao.findByDeparmentId(deparmentId);
 		if(departmentEntity.isPresent())
-			return modelMapper.map(departmentEntity, DepartmentResponseDto.class);
+			return modelMapper.map(departmentEntity.get(), DepartmentResponseDto.class);
 		return null;
 	}
 

@@ -37,7 +37,7 @@ public class MunicipalityEntity {
 	private String description;
 	
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
-    @JoinColumn(name = "id_deprtamento") // Clave foránea 
+    @JoinColumn(name = "id_departamento") // Clave foránea 
 	private DepartmentEntity departmentId;
 	
 	@OneToMany(mappedBy = "municipalityIdPerson", cascade = CascadeType.ALL)
