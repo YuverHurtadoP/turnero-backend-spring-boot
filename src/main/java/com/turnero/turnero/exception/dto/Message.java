@@ -1,4 +1,4 @@
-package com.turnero.turnero.access.dto.Response;
+package com.turnero.turnero.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RolResponseDto {
-	private int rolId;
+public class Message {
+	private String message;
 
-	private String description;
 }

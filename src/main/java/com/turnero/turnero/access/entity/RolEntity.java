@@ -1,8 +1,5 @@
 package com.turnero.turnero.access.entity;
 
-import com.turnero.turnero.general.entity.DepartmentEntity;
-import com.turnero.turnero.general.entity.MunicipalityEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -6,4 +6,5 @@ import com.turnero.turnero.general.dto.response.MunicipalityResponseDto;
 
 public interface IMunicipalityService {
 	public List<MunicipalityResponseDto> municipalityList();
+	MunicipalityResponseDto findByMunicipalityId(int municipalityId);
 }

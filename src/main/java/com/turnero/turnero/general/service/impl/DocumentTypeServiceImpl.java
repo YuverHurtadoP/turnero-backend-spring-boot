@@ -1,6 +1,7 @@
 package com.turnero.turnero.general.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,14 @@ public class DocumentTypeServiceImpl implements IDocumentTypeService {
 		 List<DocumentTypeEntity> documenyoTypeListEntity = documentTypeDao.findAll();
 		 return documenyoTypeListEntity.stream().map(info -> modelMapper.map(info, DocumentTypeResponseDto.class))
 		            .collect(Collectors.toList());
+	}
+
+	@Override
+	public DocumentTypeResponseDto findByDocumentTypeId(int documentTypeId) {
+		Optional<DocumentTypeEntity> documenyoType = documentTypeDao.findByDocumentTypeId(documentTypeId);
+		if(documenyoType.isPresent())
+			return  modelMapper.map(documenyoType, DocumentTypeResponseDto.class);
+		return null;
 	}
 
 }

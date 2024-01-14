@@ -1,6 +1,7 @@
 package com.turnero.turnero.general.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,16 @@ public class DerpartmentServiceImpl implements IDerpartmentService{
 		 List<DepartmentEntity> departmentListEntity = departmentDao.findAll();
 		return departmentListEntity.stream().map(departmentInfo -> modelMapper.map(departmentInfo, DepartmentResponseDto.class))
 	            .collect(Collectors.toList());
+	}
+
+
+
+	@Override
+	public DepartmentResponseDto findByDeparmentId(int deparmentId) {
+		Optional<DepartmentEntity> departmentEntity = departmentDao.findByDeparmentId(deparmentId);
+		if(departmentEntity.isPresent())
+			return modelMapper.map(departmentEntity, DepartmentResponseDto.class);
+		return null;
 	}
 
 }
