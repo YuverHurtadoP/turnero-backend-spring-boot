@@ -13,8 +13,10 @@ import com.turnero.turnero.access.Service.IUserService;
 import com.turnero.turnero.access.dto.request.UserRequestDto;
 import com.turnero.turnero.exception.BadRequestException;
 import com.turnero.turnero.exception.NotFoundException;
+import com.turnero.turnero.general.dto.request.EmailRequestDto;
 import com.turnero.turnero.general.service.IDocumentTypeService;
 import com.turnero.turnero.general.service.IMunicipalityService;
+import com.turnero.turnero.general.service.impl.EmailServiceImpl;
 import com.turnero.turnero.person.dao.IPersonDao;
 import com.turnero.turnero.person.dto.request.PersonRequestDto;
 import com.turnero.turnero.person.dto.request.PersonUpdateRequestDto;
@@ -42,6 +44,9 @@ public class PersonServiceImpl implements IPersonService {
 	
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
 	
  
 	@Override
@@ -73,6 +78,14 @@ public class PersonServiceImpl implements IPersonService {
 		userDto.setPersonId(entntyPerson.getPersonId());
 		System.out.println(userDto.getEmail());
 		userService.saveUser(userDto);
+		 EmailRequestDto email = new EmailRequestDto();
+		 
+		 
+		email.setMailTo(userDto.getEmail());
+		email.setSubject("Registro");
+		 
+		 
+		 emailServiceImpl.sendEmail(email);
 
 		return modelMapper.map(entntyPerson,PersonResponseDto.class);
 	}
@@ -95,6 +108,8 @@ public class PersonServiceImpl implements IPersonService {
 	 infoResponse.setActive(info.isActive());
 	 infoResponse.setCreatedAp(info.getCreatedAp());
 	 infoResponse.setUpdatedAp(new Date());
+	
+	
 	return infoResponse;
 		
 	}

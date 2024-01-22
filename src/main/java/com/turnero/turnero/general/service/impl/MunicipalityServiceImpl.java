@@ -21,8 +21,8 @@ public class MunicipalityServiceImpl implements IMunicipalityService {
 	@Autowired
 	private IMunicipalityDao municipalityDao;
 	@Override
-	public List<MunicipalityResponseDto> municipalityList() {
-		List<MunicipalityEntity> municipalityListEntity = municipalityDao.findAll(); 
+	public List<MunicipalityResponseDto> municipalityList(Integer departmentId) {
+		List<MunicipalityEntity> municipalityListEntity = municipalityDao.findByDepartmentId(departmentId); 
 		 return  municipalityListEntity.stream().map(info -> modelMapper.map(info, MunicipalityResponseDto.class))
 		            .collect(Collectors.toList());
 	}

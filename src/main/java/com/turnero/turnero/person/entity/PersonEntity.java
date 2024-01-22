@@ -38,7 +38,7 @@ public class PersonEntity {
 	@Column(name = "apellidos")
 	private String lastName;
 	
-	@Column(name = "nro_documentos", unique=true)
+	@Column(name = "nro_documentos")
 	private String nroDni;
 	
 	@Column(name = "nro_celular")

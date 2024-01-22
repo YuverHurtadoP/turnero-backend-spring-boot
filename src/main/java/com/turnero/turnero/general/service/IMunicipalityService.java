@@ -5,6 +5,6 @@ import java.util.List;
 import com.turnero.turnero.general.dto.response.MunicipalityResponseDto;
 
 public interface IMunicipalityService {
-	public List<MunicipalityResponseDto> municipalityList();
+	public List<MunicipalityResponseDto> municipalityList(Integer departmentId);
 	MunicipalityResponseDto findByMunicipalityId(int municipalityId);
 }
