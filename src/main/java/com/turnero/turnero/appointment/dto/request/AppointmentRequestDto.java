@@ -1,7 +1,6 @@
 package com.turnero.turnero.appointment.dto.request;
 
-import java.util.Date;
-
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,14 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AppointmentRequestDto {
 
-	private Date dateAppointment;
 
-	private int patient;
-
-	private int personalDoctor;
-
+	@NotNull(message = "El id del paciente no puede estar en blanco")
+	private int patient; 
+ 
+	@NotNull(message = "El id de la clasificacion no puede estar en blanco")
 	private int shiftClassificationId;
-
-	private int shiftStatusId;
+	
 
 }

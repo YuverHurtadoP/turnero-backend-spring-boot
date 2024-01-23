@@ -13,6 +13,8 @@ import com.turnero.turnero.person.entity.PersonEntity;
 import jakarta.transaction.Transactional;
 
 public interface IPersonDao extends JpaRepository<PersonEntity, Integer> {
+	
+	@Query(value = "select * from persona where id_persona=?1",nativeQuery = true)
 	Optional<PersonEntity> findByPersonId(Integer personId);
 	Optional<PersonEntity> findByNroDni(String nroDni);
 	

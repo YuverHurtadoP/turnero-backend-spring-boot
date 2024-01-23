@@ -119,6 +119,7 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public PersonResponseDto findByPersonId(Integer personId) {
 		Optional<PersonEntity> entity = personDao.findByPersonId(personId);
+	 
 		if(entity.isPresent())
 			return modelMapper.map(entity.get(), PersonResponseDto.class);
 		return null;

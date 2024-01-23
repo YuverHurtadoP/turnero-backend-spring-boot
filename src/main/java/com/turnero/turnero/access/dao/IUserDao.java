@@ -8,4 +8,5 @@ import com.turnero.turnero.access.entity.UserEntity;
 
 public interface IUserDao  extends JpaRepository<UserEntity, Integer>{
 	public Optional<UserEntity> findByEmail(String email);
+	public Optional<UserEntity> findByPersonId(int personId);
 }

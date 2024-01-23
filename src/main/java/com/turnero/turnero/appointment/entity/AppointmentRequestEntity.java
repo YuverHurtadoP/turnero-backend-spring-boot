@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "clasificacion_turno")
+@Table(name = "solicitud_cita")
 public class AppointmentRequestEntity {
 	
 	
@@ -41,23 +41,26 @@ public class AppointmentRequestEntity {
 	@Column(name = "eliminado")
 	private boolean deleted;
 	
-	@Column(name = "fecha_actualizacion")
+	@Column(name = "fecha_para_cita")
 	private Date dateAppointment;
-	
-	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
-    @JoinColumn(name = "id_paciente") 
-	private PersonEntity patient;
-	
-	@Column(name = "id_medico")
-	private int personalDoctor;
 	
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
     @JoinColumn(name = "id_clasificacion_turno") 
 	private ShiftClassificationEntity shiftClassificationId;
 	
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
-    @JoinColumn(name = "id_medico") 
+    @JoinColumn(name = "id_paciente") 
+	private PersonEntity patient;
+	
+	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+    @JoinColumn(name = "estado_turno_id") 
 	private ShiftStatusEntity shiftStatusId;
+	
+	@Column(name = "id_medico")
+	private int personalDoctor;
+	
+	
+ 
 	
 
 
