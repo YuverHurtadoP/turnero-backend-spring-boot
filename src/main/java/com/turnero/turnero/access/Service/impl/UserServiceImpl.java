@@ -4,15 +4,22 @@ import java.util.Date;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.turnero.turnero.access.Service.IRolService;
 import com.turnero.turnero.access.Service.IUserService;
 import com.turnero.turnero.access.dao.IRolDao;
 import com.turnero.turnero.access.dao.IUserDao;
+import com.turnero.turnero.access.dto.Response.TokenResponseDto;
 import com.turnero.turnero.access.dto.Response.UserResponseDto;
+import com.turnero.turnero.access.dto.request.LoginRequestDto;
 import com.turnero.turnero.access.dto.request.UserRequestDto;
 import com.turnero.turnero.access.entity.UserEntity;
+import com.turnero.turnero.access.jwt.JwtService;
 import com.turnero.turnero.exception.BadRequestException;
 import com.turnero.turnero.exception.ErrorInternalServer;
 import com.turnero.turnero.exception.NotFoundException;
@@ -30,6 +37,15 @@ public class UserServiceImpl implements IUserService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private  PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private  AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private  JwtService jwtService;
 
 	@Override
 	public UserResponseDto saveUser(UserRequestDto dto) {
@@ -43,10 +59,22 @@ public class UserServiceImpl implements IUserService {
 		dto.setActive(true);
 		dto.setUpdatedAp(null);
 		dto.setCreatedAp(new Date());
+		String pass = passwordEncoder.encode(dto.getPassword());
+		dto.setPassword(pass);
 		entityUser = modelMapper.map(dto, UserEntity.class);
 		entityUser.setUserId(0);
 		entityUser = userDao.save(entityUser);
 		return modelMapper.map(entityUser,UserResponseDto.class);
+	}
+
+	@Override
+	public TokenResponseDto login(LoginRequestDto loginDto) {
+		  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+	        UserDetails user=userDao.findByEmail(loginDto.getUsername()).orElseThrow();
+	        String token=jwtService.getToken(user);
+	        return TokenResponseDto.builder()
+	            .token(token)
+	            .build();
 	}
 
 }
