@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.turnero.turnero.person.entity.PersonEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,7 +54,7 @@ public class UserEntity implements UserDetails{
 	@ManyToOne
     @JoinColumn(name = "rol_id")
 	private RolEntity rolUser; // estaba  private int rolUser;
-	
+ 
 	@Column(name = "id_persona")
 	private int personId;
 

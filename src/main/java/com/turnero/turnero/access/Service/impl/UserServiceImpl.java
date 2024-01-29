@@ -1,6 +1,8 @@
 package com.turnero.turnero.access.Service.impl;
 
 import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,18 @@ import com.turnero.turnero.access.dao.IUserDao;
 import com.turnero.turnero.access.dto.Response.TokenResponseDto;
 import com.turnero.turnero.access.dto.Response.UserResponseDto;
 import com.turnero.turnero.access.dto.request.LoginRequestDto;
+import com.turnero.turnero.access.dto.request.RecoveryPasswordRequestDto;
 import com.turnero.turnero.access.dto.request.UserRequestDto;
 import com.turnero.turnero.access.entity.UserEntity;
 import com.turnero.turnero.access.jwt.JwtService;
 import com.turnero.turnero.exception.BadRequestException;
 import com.turnero.turnero.exception.ErrorInternalServer;
 import com.turnero.turnero.exception.NotFoundException;
+import com.turnero.turnero.exception.dto.Message;
+import com.turnero.turnero.general.dto.request.EmailRequestDto;
+import com.turnero.turnero.general.service.impl.EmailServiceImpl;
+import com.turnero.turnero.person.dao.IPersonDao;
+import com.turnero.turnero.person.entity.PersonEntity;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -46,6 +54,13 @@ public class UserServiceImpl implements IUserService {
 	
 	@Autowired
 	private  JwtService jwtService;
+	
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
+	
+	@Autowired
+	private IPersonDao personDao;
+	
 
 	@Override
 	public UserResponseDto saveUser(UserRequestDto dto) {
@@ -76,5 +91,40 @@ public class UserServiceImpl implements IUserService {
 	            .token(token)
 	            .build();
 	}
+
+	@Override
+	public  Message recoveryPassword(RecoveryPasswordRequestDto dto) {
+		 Optional<UserEntity> entity =  userDao.findByEmail(dto.getEmail());
+		 
+		 
+		 
+		 if(entity.isPresent()  ) {
+			 
+			 Optional<PersonEntity> entityPerson  = personDao.findByPersonId(entity.get().getPersonId());
+			 if(entityPerson.isPresent() && entityPerson.get().getNroDni() == dto.getDni()) {
+				 String pass = this.generateRandomString(5);
+				 EmailRequestDto email = new EmailRequestDto();
+				 
+				 
+					email.setMailTo(dto.getEmail());
+					email.setSubject("Recuperación de acceso");
+					email.setBody("La siguiente es su clave de acceso: "+pass);
+					 
+				 userDao.recoveryPassword(passwordEncoder.encode(pass), new Date(), dto.getEmail());
+				 emailServiceImpl.sendEmail(email);
+				 return new Message("A su correo electrónico le hemos enviado la nueva contraseña");
+			 }else{
+				 throw new  NotFoundException("El número de documento no está asociado al correo electrónico");
+			 }
+			
+		 }else {
+			  throw new  NotFoundException("El usuario no esta presente en la base de dato");
+		 }
+ 	}
+	
+	private   String generateRandomString(int longitud) {
+        String randomString = UUID.randomUUID().toString().replaceAll("-", "");
+        return  randomString.substring(0, longitud);
+    }
 
 }

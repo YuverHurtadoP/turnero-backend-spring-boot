@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class EmailRequestDto {
 	private String mailTo;
 	private String subject;
+	private String body;
  
 
 }

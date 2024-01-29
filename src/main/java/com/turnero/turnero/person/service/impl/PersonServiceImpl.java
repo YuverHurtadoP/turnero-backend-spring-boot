@@ -83,6 +83,7 @@ public class PersonServiceImpl implements IPersonService {
 		 
 		email.setMailTo(userDto.getEmail());
 		email.setSubject("Registro");
+		email.setBody("Usted ha sido registrado con exito, ahora cuenta con un usuario y contraseña para gestionar sus citas medicas");
 		 
 		 
 		 emailServiceImpl.sendEmail(email);

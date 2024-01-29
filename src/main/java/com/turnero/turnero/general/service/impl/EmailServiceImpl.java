@@ -34,7 +34,7 @@ public class EmailServiceImpl implements IEmailService {
 			MimeMessageHelper helper=new MimeMessageHelper(message,true);
 			Context context = new Context();
 			   Map<String, Object> model = new HashMap<>();
-	           model.put("body","Usted ha sido registrado con exito, ahora cuenta con un usuario y contraseña para gestionar sus citas medicas.");
+	           model.put("body", emailRequestDto.getBody());
 	           context.setVariables(model);
 			String htmlText = templateEngine.process("email-template", context);
 			helper.setFrom("yuversahupe@gmail.com");//desde
